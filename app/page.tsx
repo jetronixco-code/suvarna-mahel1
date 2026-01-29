@@ -14,7 +14,7 @@ export default async function Home() {
   // Dynamic Content Logic
   const latestProduct = allProducts[0];
   const featuredProducts = allProducts.length > 1 ? allProducts.slice(1, 6) : [];
-const vaultProducts = allProducts.slice(1);
+const vaultProducts = allProducts;
 
   return (
     <div className="w-full bg-[#FAFAF9]">
