@@ -132,29 +132,29 @@ const vaultProducts = allProducts;
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16">
-          {vaultProducts.map((item) => {
-            const isLimited = item.price > 5000;
-            return (
-              <Link href={`/product/${item.id}`} key={item.id} className="group">
-                <div className="relative aspect-[3/4] overflow-hidden bg-white shadow-sm border border-gray-100 transition-all duration-1000 group-hover:shadow-2xl">
-                  {isLimited && (
-                    <div className="absolute top-0 right-0 z-20 bg-[#C6A87C] text-black text-[7px] md:text-[8px] uppercase tracking-[0.3em] font-bold px-3 py-1.5 flex items-center gap-1 shadow-lg">
-                      <Sparkles size={8} /> Limited Edition
-                    </div>
-                  )}
-                  <Image src={item.imageUrls?.split(",")[0] || "/placeholder.jpg"} alt={item.name} fill className="object-cover group-hover:scale-110 transition-all duration-[3000ms]" />
-                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-                <div className="mt-8 text-center space-y-2">
-                  <h3 className="font-serif text-lg uppercase tracking-tight text-gray-900 group-hover:text-[#C6A87C] transition-colors">{item.name}</h3>
-                  <div className="flex flex-col items-center">
-                    <p className="text-[#C6A87C] font-bold text-sm">₹{item.price}</p>
-                    <div className="w-0 h-[px] bg-[#C6A87C] mt-2 transition-all duration-500 group-hover:w-12" />
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+         {vaultProducts.map((item) => {
+  const priceNumber = Number(item.price) || 0;
+const isLimited = priceNumber > 5000;
+
+  return (
+    <Link href={`/product/${item.id}`} key={item.id} className="group">
+      <div className="relative aspect-[3/4] overflow-hidden bg-white shadow-sm border border-gray-100 transition-all duration-1000 group-hover:shadow-2xl">
+        {isLimited && (
+          <div className="absolute top-0 right-0 z-20 bg-[#C6A87C] text-black text-[7px] md:text-[8px] uppercase tracking-[0.3em] font-bold px-3 py-1.5">
+            Limited Edition
+          </div>
+        )}
+        <Image
+          src={item.imageUrls?.split(",")[0] || "/placeholder.jpg"}
+          alt={item.name}
+          fill
+          className="object-cover"
+        />
+      </div>
+    </Link>
+  );
+})}
+
         </div>
       </section>
 
