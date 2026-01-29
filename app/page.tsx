@@ -132,12 +132,13 @@ const vaultProducts = allProducts;
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16">
-         {vaultProducts.map((item) => {
+        {vaultProducts.map((item) => {
   const priceNumber = Number(item.price) || 0;
-const isLimited = priceNumber > 5000;
+  const isLimited = priceNumber > 5000;
 
   return (
     <Link href={`/product/${item.id}`} key={item.id} className="group">
+      {/* Image Card */}
       <div className="relative aspect-[3/4] overflow-hidden bg-white shadow-sm border border-gray-100 transition-all duration-1000 group-hover:shadow-2xl">
         {isLimited && (
           <div className="absolute top-0 right-0 z-20 bg-[#C6A87C] text-black text-[7px] md:text-[8px] uppercase tracking-[0.3em] font-bold px-3 py-1.5">
@@ -148,12 +149,24 @@ const isLimited = priceNumber > 5000;
           src={item.imageUrls?.split(",")[0] || "/placeholder.jpg"}
           alt={item.name}
           fill
-          className="object-cover"
+          className="object-cover group-hover:scale-110 transition-transform duration-[2500ms]"
         />
+      </div>
+
+      {/* Text Content */}
+      <div className="mt-6 text-center space-y-2">
+        <h3 className="font-serif text-sm uppercase tracking-wide text-gray-900 group-hover:text-[#C6A87C] transition-colors">
+          {item.name}
+        </h3>
+
+        <p className="text-[#C6A87C] font-bold text-sm">
+          ₹{priceNumber.toLocaleString("en-IN")}
+        </p>
       </div>
     </Link>
   );
 })}
+
 
         </div>
       </section>

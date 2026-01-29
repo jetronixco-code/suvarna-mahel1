@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { UploadDropzone } from "@/utils/uploadthing";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, Loader2, X, CheckCircle2 } from "lucide-react";
+import { ChevronLeft, Loader2, X } from "lucide-react";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
+
+/* ---------- TYPES ---------- */
 
 interface InputGroupProps {
   label: string;
@@ -20,10 +22,12 @@ interface SelectGroupProps {
   onChange: (value: string) => void;
 }
 
+/* ---------- PAGE ---------- */
+
 export default function AddProduct() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [images, setImages] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
@@ -42,9 +46,14 @@ export default function AddProduct() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (images.length === 0) return toast.error("Please upload at least one image");
+
+    if (images.length === 0) {
+      toast.error("Please upload at least one image");
+      return;
+    }
 
     setLoading(true);
+
     try {
       const res = await fetch("/api/products", {
         method: "POST",
@@ -54,16 +63,14 @@ export default function AddProduct() {
         }),
       });
 
-      if (res.ok) {
-        toast.success("Masterpiece Added Successfully!");
-        router.push("/admin");
-        router.refresh();
-      } else {
-        toast.error("Failed to add product");
-      }
+      if (!res.ok) throw new Error("Request failed");
+
+      toast.success("Masterpiece Added Successfully!");
+      router.push("/admin");
+      router.refresh();
     } catch (err) {
       console.error(err);
-      toast.error("Something went wrong");
+      toast.error("Failed to add product");
     } finally {
       setLoading(false);
     }
@@ -79,13 +86,16 @@ export default function AddProduct() {
           <ChevronLeft size={14} /> Back to Dashboard
         </Link>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-16"
+        >
           {/* LEFT */}
           <div className="lg:col-span-5 space-y-8">
             <div className="bg-white border border-gray-100 p-8 shadow-sm">
               <UploadDropzone
                 endpoint="imageUploader"
-                onUploadProgress={(p) => setUploadProgress(p)}
+                onUploadProgress={(p: number) => setUploadProgress(p)}
                 onClientUploadComplete={(res) => {
                   setImages((prev) => [...prev, ...res.map((f) => f.url)]);
                   setUploadProgress(0);
@@ -101,11 +111,20 @@ export default function AddProduct() {
 
               <div className="grid grid-cols-3 gap-4 mt-8">
                 {images.map((url, i) => (
-                  <div key={i} className="relative aspect-square border">
-                    <img src={url} className="w-full h-full object-cover" />
+                  <div
+                    key={i}
+                    className="relative aspect-square border overflow-hidden"
+                  >
+                    <img
+                      src={url}
+                      alt={`Product image ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
                     <button
                       type="button"
-                      onClick={() => setImages(images.filter((_, idx) => idx !== i))}
+                      onClick={() =>
+                        setImages(images.filter((_, idx) => idx !== i))
+                      }
                       className="absolute top-1 right-1 bg-black text-white p-1"
                     >
                       <X size={12} />
@@ -124,14 +143,19 @@ export default function AddProduct() {
               onChange={(v) => setFormData({ ...formData, name: v })}
             />
 
-            <textarea
-              rows={4}
-              placeholder="Describe the craftsmanship..."
-              className="w-full border p-4"
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
+            <div className="space-y-2">
+              <label className="text-xs uppercase text-gray-500">
+                Description
+              </label>
+              <textarea
+                rows={4}
+                placeholder="Describe the craftsmanship..."
+                className="w-full border p-4 outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+              />
+            </div>
 
             <div className="grid grid-cols-2 gap-8">
               <InputGroup
@@ -152,7 +176,7 @@ export default function AddProduct() {
 
             <button
               disabled={loading}
-              className="w-full bg-black text-[#C6A87C] py-5 uppercase tracking-widest"
+              className="w-full bg-black text-[#C6A87C] py-5 uppercase tracking-widest disabled:opacity-50"
             >
               {loading ? <Loader2 className="animate-spin" /> : "Add to Collection"}
             </button>
@@ -168,7 +192,7 @@ export default function AddProduct() {
 function InputGroup({ label, placeholder, onChange }: InputGroupProps) {
   return (
     <div className="space-y-2">
-      <label className="text-xs uppercase">{label}</label>
+      <label className="text-xs uppercase text-gray-500">{label}</label>
       <input
         required
         placeholder={placeholder}
@@ -182,7 +206,7 @@ function InputGroup({ label, placeholder, onChange }: InputGroupProps) {
 function SelectGroup({ label, options, onChange }: SelectGroupProps) {
   return (
     <div className="space-y-2">
-      <label className="text-xs uppercase">{label}</label>
+      <label className="text-xs uppercase text-gray-500">{label}</label>
       <select
         onChange={(e) => onChange(e.target.value)}
         className="w-full border-b py-3"
