@@ -47,11 +47,43 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-[11px] uppercase tracking-[0.3em] font-bold text-white">Boutique</h4>
             <ul className="space-y-4 text-[10px] uppercase tracking-[0.2em] text-gray-500">
-              <li><Link href="/?category=Necklace" className="hover:text-[#C6A87C] transition-colors">Necklaces</Link></li>
-              <li><Link href="/?category=Earrings" className="hover:text-[#C6A87C] transition-colors">Earrings</Link></li>
-              <li><Link href="/?category=Bangles" className="hover:text-[#C6A87C] transition-colors">Bangles</Link></li>
-              <li><Link href="/?category=Bridal Set" className="hover:text-[#C6A87C] transition-colors">Bridal Collection</Link></li>
-            </ul>
+  <li>
+    <Link
+      href="/category/necklace"
+      className="hover:text-[#C6A87C] transition-colors"
+    >
+      Necklaces
+    </Link>
+  </li>
+
+  <li>
+    <Link
+      href="/category/earrings"
+      className="hover:text-[#C6A87C] transition-colors"
+    >
+      Earrings
+    </Link>
+  </li>
+
+  <li>
+    <Link
+      href="/category/bangles"
+      className="hover:text-[#C6A87C] transition-colors"
+    >
+      Bangles
+    </Link>
+  </li>
+
+  <li>
+    <Link
+      href="/category/bridal-set"
+      className="hover:text-[#C6A87C] transition-colors"
+    >
+      Bridal Collection
+    </Link>
+  </li>
+</ul>
+
           </div>
 
           <div className="space-y-6">
@@ -69,7 +101,7 @@ export default function Footer() {
             <ul className="space-y-4 text-[10px] uppercase tracking-[0.1em] text-gray-500 font-light">
               <li className="flex items-center gap-3"><Phone size={12} className="text-[#C6A87C]" /> 8799282255</li>
               <li className="flex items-center gap-3 lowercase tracking-normal"><Mail size={12} className="text-[#C6A87C]" /> suvarnamaheljewellery@gmail.com</li>
-              <li className="flex items-start gap-3 leading-relaxed capitalize tracking-normal"><MapPin size={12} className="text-[#C6A87C] shrink-0" /> Mumbai, Maharashtra, India</li>
+              <li className="flex items-start gap-3 leading-relaxed capitalize tracking-normal"><MapPin size={12} className="text-[#C6A87C] shrink-0" /> Surat, Gujarat, India</li>
             </ul>
           </div>
 
@@ -85,9 +117,18 @@ export default function Footer() {
               />
             </div>
             <div className="flex gap-6 text-[#C6A87C]/60">
-              <Instagram size={18} className="hover:text-white cursor-pointer transition-colors" />
-              <Facebook size={18} className="hover:text-white cursor-pointer transition-colors" />
-            </div>
+  <a
+    href="https://www.instagram.com/suvarnamahel/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Suvarna Mahel Instagram"
+  >
+    <Instagram size={18} className="hover:text-white cursor-pointer transition-colors" />
+  </a>
+
+  <Facebook size={18} className="hover:text-white cursor-pointer transition-colors" />
+</div>
+
           </div>
         </div>
 

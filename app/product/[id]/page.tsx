@@ -46,7 +46,7 @@ export default async function ProductPage({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
 
           {/* LEFT: IMAGE GALLERY */}
-          <div className="lg:col-span-7 sticky top-24">
+<div className="lg:col-span-7 lg:sticky lg:top-24">
             <ProductGallery
               images={imageUrls.length ? imageUrls : ["/placeholder.jpg"]}
               alt={product.name}
