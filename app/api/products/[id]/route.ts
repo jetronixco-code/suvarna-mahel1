@@ -2,8 +2,9 @@ import { db } from "@/db";
 import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache"; // <--- 1. IMPORT THIS
 
-// 1. GET ONE PRODUCT
+// 1. GET ONE PRODUCT (No changes needed here)
 export async function GET(
   req: Request, 
   { params }: { params: Promise<{ id: string }> }
@@ -33,7 +34,7 @@ export async function PATCH(
     const { id } = await params;
     const body = await req.json();
     
-    // Explicitly mapping the fields ensures 'description' and others are updated correctly
+    // Explicitly mapping the fields
     const result = await db.update(products)
       .set({
         name: body.name,
@@ -50,6 +51,12 @@ export async function PATCH(
         purity: body.purity,
       })
       .where(eq(products.id, parseInt(id)));
+
+    // <--- 3. ADD THESE LINES TO FIX VERCEL EDITING --->
+    console.log(`Revalidating cache for product ${id}`);
+    revalidatePath("/");                     // Updates Home/Vault
+    revalidatePath("/admin");                // Updates Admin Dashboard
+    revalidatePath(`/product/${id}`);        // Updates the specific Product Page
       
     return NextResponse.json(result);
   } catch (error) {
